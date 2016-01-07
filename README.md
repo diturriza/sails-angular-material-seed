@@ -1,6 +1,9 @@
-# lol
+# Rvous- Stats Service
 
 a [Sails](http://sailsjs.org) application
 =======
-# sails-angular-material-seed
-Sails with AngularJS and Material Angular, following the JohnPapa guidelines.
+
+#Installation and Run
+* Go to / folder and do npm install
+* Go to assets/assets/ and do bower install
+* Go to / and do sails lift
