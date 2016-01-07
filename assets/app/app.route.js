@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('payname_lol')
+		.module('statsDashboard')
 		.config(appRoutes)
 
 	function appRoutes($stateProvider, $urlRouterProvider) {
@@ -23,7 +23,8 @@
 			views: {
 				"content": {
 					templateUrl: "app/components/index/index.html",
-					controller: "IndexController"
+					controller: "IndexController",
+					controllerAs: "index"
 				}
 			}
 		})

@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('payname_lol')
+		.module('statsDashboard')
 		.config(appConfig)
 
 	function appConfig($mdThemingProvider) {

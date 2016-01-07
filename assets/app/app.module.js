@@ -1,23 +1,24 @@
 (function() {
     'use strict';
 
-    angular.module('payname_lol', [
-        
+    angular.module('statsDashboard', [
+
         /*
          * Shared
          */
         'app.shared.layout',
-       
+
         /*
          * Components
          */
         'app.components.index',
-       
+
          /*
          * other
          */
         'ui.router',
         'ngMaterial',
-        'ngMessages'
+        'ngMessages',
+        'pusher-angular'
     ]);
 })();

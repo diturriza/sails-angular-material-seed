@@ -24,7 +24,7 @@
     "grunt-contrib-coffee": "~0.10.1"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "sails lift",
     "debug": "node debug app.js"
   },
   "main": "app.js",
@@ -33,5 +33,8 @@
     "url": "git://github.com/kai/lol.git"
   },
   "author": "kai",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "nodemon": "1.8.1"
+  }
 }
