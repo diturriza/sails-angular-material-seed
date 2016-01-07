@@ -1,6 +1,6 @@
 # Rvous- Stats Service
 
-a [Sails](http://sailsjs.org) application
+## a [Sails](http://sailsjs.org) application
 =======
 
 #Installation and Run
