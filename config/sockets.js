@@ -43,13 +43,12 @@ module.exports.sockets = {
   //
   // -OR-
   //
-
+  //redis://redistogo:33fc6d6d02ed5c661a0e6b71e65bc964@tarpon.redistogo.com:11948/
   // adapter: 'redis',
-  // host: '127.0.0.1',
-  // port: 6379,
-  // db: 'sails',
-  // pass: '<redis auth password>'
-
+  // host: process.env.REDIS_HOST,
+  // port: process.env.REDIS_PORT,
+  // db: process.env.REDIS_DB,
+  // pass: process.env.REDIS_PASSWORD
 
 
  /***************************************************************************
