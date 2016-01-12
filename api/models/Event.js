@@ -8,7 +8,13 @@
 module.exports = {
 
   attributes: {
-
+    // name: {
+    //   type: 'string',
+    //   required: true
+    // },
+    // payload: {
+    //   type: 'json',
+    //   required: true
+    // }
   }
 };
-

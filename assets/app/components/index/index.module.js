@@ -1,5 +1,5 @@
 (function() {
     'use strict';
 
-    angular.module('app.components.index', []);
+    angular.module('app.components.index', ['chart.js']);
 })();

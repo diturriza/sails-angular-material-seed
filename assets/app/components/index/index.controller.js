@@ -18,14 +18,29 @@
 
 		function init(){
 			vm.events = [];
+			vm.events.created = [];
+			vm.events.cancelled = [];
+
 			vm.content = "Hello content !";
 
 			pusher.subscribe('test-channel');
 			pusher.bind('app.booked-appointment-created',
 		  function(pusherEvent) {
-				vm.events.push(pusherEvent);
+				//vm.events.push(pusherEvent);
+				var today = new Date().getDay();
+				vm.events.created.push(pusherEvent);
+				$scope.pie.data[0] = parseInt($scope.pie.data[0]) + 1;
+				$scope.lineChart.data[0][today] = parseInt($scope.lineChart.data[0][today])+ 1;
 				saveEvent(pusherEvent);
 		  });
+
+			pusher.bind('app.booked-appointment-cancelled',
+			function(pusherEvent) {
+				//vm.events.push(pusherEvent);
+				vm.events.cancelled.push(pusherEvent);
+				$scope.pie.data[1] = parseInt($scope.pie.data[1]) + 1;
+				//saveEvent(pusherEvent);
+			});
 		}
 
 		 function saveEvent(data){
@@ -47,47 +62,20 @@
     	);
 		}
 
-		$scope.phones = [
-		{ type: 'Home', number: '(555) 251-1234' },
-		{ type: 'Cell', number: '(555) 786-9841' },
-		{ type: 'Office', number: '(555) 314-1592' }
-	];
-	$scope.todos = [
-		{
-			face : imagePath,
-			what: 'Brunch this weekend?',
-			who: 'Min Li Chan',
-			when: '3:08PM',
-			notes: " I'll be in your neighborhood doing errands"
-		},
-		{
-			face : imagePath,
-			what: 'Brunch this weekend?',
-			who: 'Min Li Chan',
-			when: '3:08PM',
-			notes: " I'll be in your neighborhood doing errands"
-		},
-		{
-			face : imagePath,
-			what: 'Brunch this weekend?',
-			who: 'Min Li Chan',
-			when: '3:08PM',
-			notes: " I'll be in your neighborhood doing errands"
-		},
-		{
-			face : imagePath,
-			what: 'Brunch this weekend?',
-			who: 'Min Li Chan',
-			when: '3:08PM',
-			notes: " I'll be in your neighborhood doing errands"
-		},
-		{
-			face : imagePath,
-			what: 'Brunch this weekend?',
-			who: 'Min Li Chan',
-			when: '3:08PM',
-			notes: " I'll be in your neighborhood doing errands"
-		},
-	];
+
+		$scope.pie = {
+				labels:["Booked Appoinments", "Cancelled Appoinments"],
+		  	 data:[10, 0]
+			};
+
+			$scope.lineChart = {
+				'labels': ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+				'series': ["Daily Booked Appoinments"],
+				'data': [[0, 10, 0, 0, 0, 0, 0]]
+			};
+
+	  $scope.onClick = function (points, evt) {
+	    console.log(points, evt);
+	  };
 	}
 })();

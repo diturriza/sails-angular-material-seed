@@ -29,7 +29,7 @@ module.exports.connections = {
   *                                                                          *
   ***************************************************************************/
   localDiskDb: {
-    adapter: 'sails-disk'
+    adapter: 'sails-mongo'
   },
 
   /***************************************************************************
@@ -64,6 +64,11 @@ module.exports.connections = {
     // password: 'password',
     // database: 'your_mongo_db_name_here'
   },
+
+  productionMongoHqDb: {
+  adapter: 'sails-mongo',
+  url: process.env.MONGOLAB_URI
+}
 
   /***************************************************************************
   *                                                                          *
