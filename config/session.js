@@ -43,6 +43,16 @@ module.exports.session = {
 
   // adapter: 'redis',
 
+   cookie: {
+        maxAge: 60 * 60 * 24 * 7
+    },
+    adapter: 'redis',
+    host: process.env.REDIS_HOST || '127.0.0.1',
+    port: process.env.REDIS_PORT || 6379,
+    ttl: 60 * 60 * 24 * 7,
+    db: null,
+    pass: process.env.REDIS_PASS || null,
+    prefix: 'sess:'
   /***************************************************************************
   *                                                                          *
   * The following values are optional, if no options are set a redis         *
