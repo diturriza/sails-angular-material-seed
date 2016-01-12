@@ -21,6 +21,15 @@ module.exports = {
     connection: 'productionMongoLab'
   },
 
+  session: {
+    adapter: 'redis',
+
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+    db: process.env.REDIS_DB,
+    pass: process.env.REDIS_PASSWORD
+  }
+
   /***************************************************************************
    * Set the port in the production environment to 80                        *
    ***************************************************************************/
