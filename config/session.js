@@ -50,9 +50,9 @@ module.exports.session = {
     host: process.env.REDIS_HOST || '127.0.0.1',
     port: process.env.REDIS_PORT || 6379,
     ttl: 60 * 60 * 24 * 7,
-    db: null,
-    pass: process.env.REDIS_PASS || null,
-    prefix: 'sess:'
+    db: process.env.REDIS_DB || null,
+    pass: process.env.REDIS_PASSWORD || null,
+    prefix: 'rvous-stats:'
   /***************************************************************************
   *                                                                          *
   * The following values are optional, if no options are set a redis         *
