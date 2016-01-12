@@ -65,10 +65,10 @@ module.exports.connections = {
     // database: 'your_mongo_db_name_here'
   },
 
-  productionMongoHqDb: {
+  productionMongoLab: {
   adapter: 'sails-mongo',
   url: process.env.MONGOLAB_URI
-}
+  },
 
   /***************************************************************************
   *                                                                          *
