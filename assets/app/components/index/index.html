@@ -2,9 +2,9 @@
 	<div layout="row">
 		<md-card flex>
 			<md-toolbar class="md-primary">
-			   <h1 class="md-toolbar-tools">Event Logger</h1>
-			 </md-toolbar>
-			<md-card-content >
+				<h1 class="md-toolbar-tools">Event Logger</h1>
+			</md-toolbar>
+			<md-card-content>
 				<div layout="row">
 					<div layout="column" flex>
 						Appoinments Created: {{index.events.created.length}}
@@ -19,16 +19,59 @@
 	</div>
 	<hr>
 	<div layout="row" layout-padding="20" layout-align="space-around">
-			<div layout="column" flex>
-				<canvas id="line" class="chart chart-line" chart-data="lineChart.data"
-				  chart-labels="lineChart.labels" chart-legend="true" chart-series="lineChart.series"
-				  chart-click="onClick" >
+		<md-card flex>
+			<md-toolbar class="md-primary">
+				<h1 class="md-toolbar-tools">Daily Booked Appoinments</h1>
+			</md-toolbar>
+			<md-card-content>
+				<canvas id="line" class="chart chart-line" chart-data="lineChart.data" chart-labels="lineChart.labels" chart-legend="false" chart-series="lineChart.series" chart-click="onClick">
 				</canvas>
-			</div>
-			<div layout="column" flex >
-				<canvas id="doughnut" class="chart chart-doughnut"
-				  chart-data="pie.data" chart-labels="pie.labels">
+				<md-card-content>
+		</md-card>
+		<md-card flex>
+			<md-toolbar class="md-primary">
+				<h1 class="md-toolbar-tools">Cancelled Appoinments</h1>
+			</md-toolbar>
+			<md-card-content>
+				<canvas id="doughnut" class="chart chart-doughnut" chart-data="pie.data" chart-labels="pie.labels">
 				</canvas>
-			</div>
+				<md-card-content>
+		</md-card>
 	</div>
-</div>
+	<md-content>
+		<md-toolbar class="md-table-toolbar md-default">
+			<div class="md-toolbar-tools">
+				<span>Debug Console</span>
+			</div>
+		</md-toolbar>
+
+		<!-- exact table from live demo -->
+		<md-table-container>
+			<table md-table>
+				<thead md-head md-order="query.order" md-on-reorder="onReorder">
+					<tr md-row>
+						<th md-column >
+							<span>Event</span>
+						</th>
+						<th md-column md-numeric>
+							<span>Created at</span>
+						</th>
+						<th md-column md-numeric>Patient</th>
+						<th md-column md-numeric>Details</th>
+						<th md-column md-numeric>Time</th>
+					</tr>
+				</thead>
+				<tbody md-body>
+					<tr md-row md-select="data" md-select-id="{{data.name}}" md-auto-select ng-repeat="data in index.events">
+						<td md-cell>{{data.name}}</td>
+						<td md-cell>{{data.event.statut.date}}</td>
+						<td md-cell>{{data.event.patient.nom}}</td>
+						<td md-cell>{{data.event.description}}</td>
+						<td md-cell>{{data.event.dateDeb}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</md-table-container>
+
+		<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{index.events.length}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+</md-content>
