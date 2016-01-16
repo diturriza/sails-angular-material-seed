@@ -29,7 +29,7 @@ module.exports.connections = {
   *                                                                          *
   ***************************************************************************/
   localDiskDb: {
-    adapter: 'sails-mongo'
+    adapter: 'sails-disk'
   },
 
   /***************************************************************************
@@ -62,7 +62,7 @@ module.exports.connections = {
     port: 27017,
     // user: 'username',
     // password: 'password',
-    // database: 'your_mongo_db_name_here'
+    database: 'rvous'
   },
 
   productionMongoLab: {

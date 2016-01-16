@@ -28,6 +28,19 @@ module.exports.policies = {
 
   // '*': true,
 
+  EventController:{
+    '*': ['hasJsonWebToken'],
+  },
+
+  UserController:{
+    'jwt': true,
+
+    '*': ['hasJsonWebToken'],
+  }
+
+  // AuthController:{
+  //   '*': ['hasJsonWebToken'],
+  // }
   /***************************************************************************
   *                                                                          *
   * Here's an example of mapping some policies to run before a controller    *

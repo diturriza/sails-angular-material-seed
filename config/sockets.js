@@ -51,17 +51,17 @@ module.exports.sockets = {
   // pass: process.env.REDIS_PASSWORD
 
 
-  cookie: {
-       maxAge: 60 * 60 * 24 * 7
-   },
-   adapter: 'redis',
-   host: process.env.REDIS_HOST || '127.0.0.1',
-   port: process.env.REDIS_PORT || 6379,
-   ttl: 60 * 60 * 24 * 7,
-   db: process.env.REDIS_DB || null,
-   pass: process.env.REDIS_PASSWORD || null,
-   prefix: 'rvous-stats:'
-   
+  // cookie: {
+  //      maxAge: 60 * 60 * 24 * 7
+  //  },
+  //  adapter: 'redis',
+  //  host: process.env.REDIS_HOST || '127.0.0.1',
+  //  port: process.env.REDIS_PORT || 6379,
+  //  ttl: 60 * 60 * 24 * 7,
+  //  db: process.env.REDIS_DB || null,
+  //  pass: process.env.REDIS_PASSWORD || null,
+  //  prefix: 'rvous-stats:'
+
  /***************************************************************************
   *                                                                          *
   * Whether to expose a 'get /__getcookie' route with CORS support that sets *

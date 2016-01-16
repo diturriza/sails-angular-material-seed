@@ -2,5 +2,5 @@
     'use strict';
 
   angular.module('statsDashboard')
-  .constant('BaseApiUrl',  'http://localhost:1337');
+  .constant('BaseApiUrl',  'http://localhost:1338');
 })();

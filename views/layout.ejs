@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>New Sails App</title>
+    <title>Rvous Stats App</title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	 <!-- Angulars Material CSS now available via Google CDN; version 0.8 used here -->
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.8.3/angular-material.min.css">
+
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/libs/angular-material/angular-material.min.css">
     <link rel="stylesheet" href="/assets/libs/angular-chart.js/dist/angular-chart.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="/assets/libs/angular-material-data-table/dist/md-data-table.min.css" media="screen" title="no title" charset="utf-8">
   </head>
@@ -20,7 +23,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
   <script src="//js.pusher.com/3.0/pusher.min.js"></script>
-  <script src="http://code.highcharts.com/highcharts.src.js"></script>
   <script src="/assets/libs/Chart.js/Chart.js"></script>
  	<script src="/assets/libs/angular/angular.js"></script>
   <script src="//cdn.jsdelivr.net/angular.pusher/latest/pusher-angular.min.js"></script>
@@ -31,15 +33,34 @@
 	<script src="/assets/libs/angular-chart.js/dist/angular-chart.js"></script>
 	<script src="/assets/libs/angular-material/angular-material.min.js"></script>
   <script src="/assets/libs/angular-material-data-table/dist/md-data-table.min.js"></script>
-	<script src="/app/app.module.js"></script>
+  <script src="/assets/libs/moment/min/moment.min.js"></script>
+  <script src="/assets/libs/angular-moment/angular-moment.min.js"></script>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
+
+  <script src="/app/app.module.js"></script>
   <script src="/app/app.constants.js"></script>
 	<script src="/app/app.config.js"></script>
 	<script src="/app/app.route.js"></script>
+  <script src="/app/app.run.js"></script>
+  <script src="/app/components/auth/auth.module.js"></script>
+  <script src="/app/components/auth/auth.service.js"></script>
+  <script src="/app/components/auth/auth.controller.js"></script>
+  <script src="/app/components/auth/localStorage.service.js"></script>
 	<script src="/app/shared/layout/layout.module.js"></script>
 	<script src="/app/shared/layout/layout.controller.js"></script>
 	<script src="/app/components/index/index.module.js"></script>
   <script src="/app/components/index/event.service.js"></script>
   <script src="/app/components/index/index.controller.js"></script>
+  <script src="/app/components/account/account.module.js"></script>
+  <script src="/app/components/account/account.service.js"></script>
+  <script src="/app/components/account/account.controller.js"></script>
+  <script src="/app/components/users/users.module.js"></script>
+  <script src="/app/components/users/users.service.js"></script>
+  <script src="/app/components/users/users.controller.js"></script>
+  <script src="/app/components/users/addUser.controller.js"></script>
+  <script src="/app/shared/table/table.module.js"></script>
+  <script src="/app/shared/table/table.directive.js"></script>
 
 
   </body>

@@ -7,10 +7,13 @@
 			<md-card-content>
 				<div layout="row">
 					<div layout="column" flex>
-						Appoinments Created: {{index.events.created.length}}
+						Events: {{vm.count}}
 					</div>
 					<div layout="column" flex>
-						Appoinments Cancelled: {{index.events.cancelled.length}}
+						Appoinments Booked: {{vm.eventsBookedTotal}}
+					</div>
+					<div layout="column" flex>
+						Appoinments Cancelled: {{vm.eventsCancelledTotal}}
 					</div>
 				</div>
 
@@ -38,40 +41,47 @@
 				<md-card-content>
 		</md-card>
 	</div>
-	<md-content>
-		<md-toolbar class="md-table-toolbar md-default">
-			<div class="md-toolbar-tools">
-				<span>Debug Console</span>
-			</div>
-		</md-toolbar>
 
-		<!-- exact table from live demo -->
-		<md-table-container>
-			<table md-table>
-				<thead md-head md-order="query.order" md-on-reorder="onReorder">
-					<tr md-row>
-						<th md-column >
-							<span>Event</span>
-						</th>
-						<th md-column md-numeric>
-							<span>Created at</span>
-						</th>
-						<th md-column md-numeric>Patient</th>
-						<th md-column md-numeric>Details</th>
-						<th md-column md-numeric>Time</th>
-					</tr>
-				</thead>
-				<tbody md-body>
-					<tr md-row md-select="data" md-select-id="{{data.name}}" md-auto-select ng-repeat="data in index.events">
-						<td md-cell>{{data.name}}</td>
-						<td md-cell>{{data.event.statut.date}}</td>
-						<td md-cell>{{data.event.patient.nom}}</td>
-						<td md-cell>{{data.event.description}}</td>
-						<td md-cell>{{data.event.dateDeb}}</td>
-					</tr>
-				</tbody>
-			</table>
-		</md-table-container>
+	<md-card>
+	<md-toolbar class="md-table-toolbar md-default" ng-hide="vm.filter">
+	  <div class="md-toolbar-tools">
+	    <span>{{vm.title}}</span>
+	    <div flex></div>
+	  </div>
+	</md-toolbar>
+	<md-toolbar class="md-table-toolbar md-default" ng-show="vm.filter">
+	  <div class="md-toolbar-tools">
+	    <md-icon class="material-icons">search</md-icon>
+	    <form flex="100" name="filter.form">
+	      <md-input-container class="md-block">
+	      <input type="text" ng-model="vm.query.filter" placeholder="search" flex>
+	    </form>
+	  </md-input-container>
+	    <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="vm.removeFilter()">
+	      <md-icon class="material-icons">close</md-icon>
+	    <div class="md-ripple-container"></div></button>
+	  </div>
+	</md-toolbar>
 
-		<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{index.events.length}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
-</md-content>
+	<!-- exact table from live demo -->
+	  <md-table-container>
+	    <table md-table md-row-select ng-model="vm.selected" md-progress="vm.promise">
+	      <thead md-head md-order="vm.query.order" md-on-reorder="vm.onReorder">
+	        <tr md-row>
+	          <th md-column ng-repeat="item in vm.headers"><span>{{item.name}}</span></th>
+	        </tr>
+	      </thead>
+	      <tbody md-body>
+	        <tr md-row md-select="item" md-select-id="{{item.id}}" md-auto-select ng-repeat="item in vm.data">
+						<td md-cell>{{item.appoinmentId}}</td>
+						<td md-cell>{{item.status}}</td>
+	          <td md-cell>{{item.patient.name}}</td>
+	          <td md-cell><span am-time-ago="item.createdAt"></span></td>
+	          <td md-cell><span am-time-ago="item.updatedAt"></span></td>
+	        </tr>
+	      </tbody>
+	    </table>
+	  </md-table-container>
+
+	  <md-table-pagination md-limit="vm.query.limit" md-page="vm.query.page" md-total="{{vm.count}}" md-on-paginate="vm.onPaginate" md-page-select></md-table-pagination>
+	</md-card>

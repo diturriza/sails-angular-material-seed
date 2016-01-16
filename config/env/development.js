@@ -18,15 +18,17 @@ module.exports = {
    ***************************************************************************/
 
   models: {
-    connection: 'productionMongoLab'
+    connection: 'someMongodbServer'
   },
-
-  session: {
-    adapter: 'memory'
-  },
-
-  sockets: {
-    adapter: 'memory'
-  }
+  //
+  // session: {
+  //   adapter: 'memory'
+  // },
+  //
+  // sockets: {
+  //   adapter: 'memory'
+  // },
+  //
+  // port: 1337
 
 };

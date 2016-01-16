@@ -34,7 +34,14 @@ module.exports.routes = {
 
   '/': {
     view: 'layout'
-  }
+  },
+
+  'get /event/totals/': 'EventController.totals',
+  'get /event/resume/' : 'EventController.resume',
+  'post /event/cancelAppointment/' : 'EventController.cancelAppointment',
+  'post /user/register/': 'UserController.register',
+  'get /event/': 'EventController.index',
+  'post /event/': 'EventController.log',
 
   /***************************************************************************
   *                                                                          *
@@ -45,5 +52,5 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  
+
 };
