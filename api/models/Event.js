@@ -27,9 +27,9 @@ module.exports = {
       type: 'json',
       defaultsTo: {}
     },
-    appoinmentId: {
+    appointmentId: {
       type: 'string',
-      defaultsTo: null
+      unique: true
     },
     professional: {
       type: 'json',
@@ -54,8 +54,8 @@ module.exports = {
     }
   },
   beforeCreate : function(values, cb){
-    console.log(values.event.patient);
-    values['appoinmentId'] = values.event.id;
+
+    values['appointmentId'] = values.event.id;
     values['dayCreated'] = parseInt(values.dayCreated) || new Date().getDay();
     values['patient'] = values.event.patient;
     values['professional'] = values.event.professionnel;

@@ -3,7 +3,8 @@ var _ = require('lodash');
 module.exports = {
   getEventsByDay: getEventsByDay,
   getEventsTotals: getEventsTotals,
-  cancelAppointment: cancelAppointment
+  cancelAppointment: cancelAppointment,
+  logEvent:logEvent
 }
 
 /**
@@ -12,7 +13,6 @@ module.exports = {
  * @return {[type]}      [description]
  */
 function getEventsByDay(cb) {
-  console.log('events grouped by day');
   Event.native(function(err, collection) {
     if (err) return cb(err);
 
@@ -32,14 +32,14 @@ function getEventsByDay(cb) {
           count: 0
         });
       }
-      return cb(null, _.orderBy(_.unionBy(results, data,'_id'),['_id'],['asc']));
+      return cb(null, _.orderBy(_.unionBy(results, data, '_id'), ['_id'], ['asc']));
     });
   });
 }
 
-function cancelAppointment(appoinmentId, cb) {
+function cancelAppointment(appointmentId, cb) {
   Event.findOne({
-      appoinmentId: appoinmentId
+      appointmentId: appointmentId
     })
     .exec(function(err, eventToBeCancelled) {
       if (err) return cb(err);
@@ -50,8 +50,8 @@ function cancelAppointment(appoinmentId, cb) {
         });
       }
       Event.update({
-        appoinmentId: eventToBeCancelled.appoinmentId
-      },{
+        appointmentId: eventToBeCancelled.appointmentId
+      }, {
         status: 'cancelled'
       }, function(err, res) {
         if (err) {
@@ -64,7 +64,6 @@ function cancelAppointment(appoinmentId, cb) {
 }
 
 function getEventsTotals(cb) {
-  console.log('count cancelled events');
   Event.native(function(err, collection) {
     if (err) return cb(err);
 
@@ -77,18 +76,46 @@ function getEventsTotals(cb) {
       }
     }], function(err, results) {
       if (err) return cb(err);
-      var data = [
-        {
-          _id: 'booked',
-          count: 0
-        },
-        {
-          _id: 'cancelled',
-          count: 0
-        }
-      ];
-      console.log(results, data);
+      var data = [{
+        _id: 'booked',
+        count: 0
+      }, {
+        _id: 'cancelled',
+        count: 0
+      }];
       return cb(null, _.unionBy(results, data, '_id'));
     });
+  });
+}
+
+/**
+ * [logEvent description]
+ * @method logEvent
+ * @param  {[type]}   data [description]
+ * @param  {Function} cb   [description]
+ * @return {[type]}        [description]
+ */
+function logEvent(data, cb) {
+
+  Event.findOne({
+    appointmentId: data.event.id
+  }, function(err, obj) {
+    if (err) {
+      return cb(err);
+    }
+
+    //if the event exists
+    if (obj) {
+      console.log('exitss');
+      return cb(null, obj);
+    }
+    console.log('not exitss');
+    Event.create(data, function(err, obj) {
+      if (err) {
+        return cb(err);
+      }
+      return cb(null, obj)
+    });
+
   });
 }

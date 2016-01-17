@@ -3,9 +3,10 @@
     angular.module('statsDashboard')
         .run(runBlock);
 
-    runBlock.$inject = ['$rootScope', '$state', 'Auth', '$location', '$http'];
+    runBlock.$inject = ['$rootScope', '$state', 'Auth', '$location', '$http','lodash'];
 
-    function runBlock($rootScope, $state, Auth, $location, $http) {
+    function runBlock($rootScope, $state, Auth, $location, $http,lodash) {
+        console.log('Lodash Version', lodash.VERSION);
 
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             $rootScope.currentState = toState.name;

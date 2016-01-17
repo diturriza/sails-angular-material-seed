@@ -49,7 +49,6 @@ module.exports = {
   },
   cancelAppointment: function (req, res){
     console.log('set an Appoinment as cancelled');
-    console.log(req.body);
     EventService.cancelAppointment(req.body.appoinmentId, function(err, data){
       if (err){
         return res.serverError(err);
@@ -58,13 +57,27 @@ module.exports = {
     });
   },
   log:function(req, res){
-    Event.create(req.body, function cb(err, resp){
-        if (err){
-          console.log(err);
-        }
-        console.log('empty');
-        console.log(resp);
-        return res.ok(req.body);
+    console.log('logging an Appoinment');
+    EventService.logEvent(req.body, function(err, resp){
+      if (err){
+        return res.serverError(err);
+      }
+      return res.ok(resp);
     });
-  }
+  },
+  webhook:function(req, res){
+    console.log('logging an Appoinment');
+    var timestamp = req.body.time_ms;
+    var events = req.body.events;
+
+    console.log(events);
+
+    EventService.logEvent(events, function(err, resp){
+      if (err){
+        return res.serverError(err);
+      }
+      return res.ok(resp);
+    });
+  },
+
 };

@@ -29,6 +29,8 @@ module.exports.policies = {
   // '*': true,
 
   EventController:{
+    'webhook': true,
+    
     '*': ['hasJsonWebToken'],
   },
 

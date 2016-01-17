@@ -42,7 +42,7 @@ module.exports.routes = {
   'post /user/register/': 'UserController.register',
   'get /event/': 'EventController.index',
   'post /event/': 'EventController.log',
-
+  'post /webhook/': 'EventController.webhook',
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *

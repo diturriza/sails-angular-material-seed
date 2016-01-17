@@ -73,9 +73,11 @@
 	      </thead>
 	      <tbody md-body>
 	        <tr md-row md-select="item" md-select-id="{{item.id}}" md-auto-select ng-repeat="item in vm.data">
-						<td md-cell>{{item.appoinmentId}}</td>
+						<td md-cell>{{item.name}}</td>
+						<td md-cell>{{item.appointmentId}}</td>
+						<td md-cell>{{item.patient['nom'] +' '+item.patient['prénom'] }}</td>
+						<td md-cell>{{item.patient['médecinTraitant'].nomComplet}}</td>
 						<td md-cell>{{item.status}}</td>
-	          <td md-cell>{{item.patient.name}}</td>
 	          <td md-cell><span am-time-ago="item.createdAt"></span></td>
 	          <td md-cell><span am-time-ago="item.updatedAt"></span></td>
 	        </tr>

@@ -5,9 +5,9 @@
     .module('app.components.index')
     .controller('IndexController', index)
 
-  index.$inject = ["$http", "$q", "$scope", "$state", "$mdToast", "$pusher", "$log", "$mdDialog", "EventService"];
+  index.$inject = ["$http", "$q", "$scope", "$state", "$mdToast", "$pusher", "$log", "$mdDialog", "EventService","lodash"];
 
-  function index($http, $q, $scope, $state, $mdToast, $pusher, $log, $mdDialog, EventService) {
+  function index($http, $q, $scope, $state, $mdToast, $pusher, $log, $mdDialog, EventService, lodash) {
     var vm = this;
     var client = new Pusher('05cebc0ddd1d3b1ba09f');
     var pusher = $pusher(client);
@@ -22,12 +22,20 @@
       name: 'Event',
       field: 'event'
     }, {
-      name: 'Código',
-      field: 'code'
+      name: 'Appoinment ID',
+      field: 'appoinmentId'
     }, {
-      name: 'Descripción',
-      field: 'description'
-    }, {
+      name: 'Patient',
+      field: 'patient'
+    },
+    {
+      name: 'Doctor',
+      field: 'doctor'
+    },{
+      name: 'Status',
+      field: 'status'
+    }
+     ,{
       name: 'CreatedAt',
       field: 'CreatedAt'
     }, {
@@ -74,26 +82,32 @@
     }
 
     function saveEvent(data) {
-      EventService.saveEvent(data).then(function(data) {
-        $log.log(data);
-        updateDashboard('booked');
-      }, function err(err) {
-        $log.log(err);
-      });
+      setTimeout(function () {
+        EventService.saveEvent(data).then(function(data) {
+          $log.log(data);
+          updateDashboard('booked');
+        }, function err(err) {
+          $log.log(err);
+        });
+      }, Math.random() * 1000);
+    }
+
+    function cancelEvent(pusherEvent) {
+      console.log(pusherEvent);
+      setTimeout(function () {
+        EventService.setAppoinmentAsCancelled(pusherEvent.event.id).then(function(res) {
+          updateDashboard('cancelled');
+          console.log(res);
+        }, function(err) {
+          console.log(err);
+        });
+      }, Math.random() * 1000);
     }
 
     function updateDashboard(event) {
 
       $q.all([getEvents(), getEventsResume(), getEventsTotals()]).then(function() {
-        vm.count++;
-        switch (event) {
-          case 'booked':
-            vm.eventsBookedTotal++;
-            break;
-          case 'Cancelled':
-            vm.eventsCancelledTotal++;
-          default:
-        }
+        console.log('dashboard updated');
       });
 
     }
@@ -102,20 +116,17 @@
       EventService.getEventsTotals().then(function(data) {
         console.log(data);
 
-        var booked, cancelled = 0;
+        var booked = lodash.find(data,['_id', 'booked']);
+        var cancelled = lodash.find(data,['_id', 'cancelled']);
 
-        if (data.length > 0){
-          booked = data[0].count;
-          cancelled = data[1].count;
-        }
         var totals = {
           booked: {
             label: "Booked Appoinments",
-            count: booked
+            count: booked?booked.count:0
           },
           cancelled: {
             label: "Cancelled Appoinments",
-            count: cancelled
+            count: cancelled?cancelled.count:0
           }
         };
 
@@ -164,35 +175,17 @@
       getEvents({page: page,limit: limit,sort: ''});
     }
 
-    function cancelEvent(pusherEvent) {
-      console.log(pusherEvent);
-      EventService.setAppoinmentAsCancelled(pusherEvent.event.id).then(function(res) {
-        vm.events.cancelled.push(pusherEvent);
-        $scope.pie.data[1] = parseInt($scope.pie.data[1]) + 1;
-        updateDashboard('cancelled');
-        console.log(res);
-      }, function(err) {
-        console.log(err);
-      });
-    }
 
     function suscribeToPusher() {
       pusher.subscribe('test-channel');
 
       pusher.bind('app.booked-appointment-created',
         function(pusherEvent) {
-          vm.events.push(pusherEvent);
-          var today = new Date().getDay();
-          console.log(today);
-          vm.events.created.push(pusherEvent);
-          $scope.pie.data[0] = parseInt($scope.pie.data[0]) + 1;
-          $scope.lineChart.data[0][today] = parseInt($scope.lineChart.data[0][today]) + 1;
           saveEvent(pusherEvent);
         });
 
       pusher.bind('app.booked-appointment-cancelled',
         function(pusherEvent) {
-          vm.events.push(pusherEvent);
           cancelEvent(pusherEvent);
         });
 
