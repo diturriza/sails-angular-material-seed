@@ -83,24 +83,24 @@
 
     function saveEvent(data) {
       setTimeout(function () {
-        EventService.saveEvent(data).then(function(data) {
-          $log.log(data);
+        // EventService.saveEvent(data).then(function(data) {
+        //   $log.log(data);
           updateDashboard('booked');
-        }, function err(err) {
-          $log.log(err);
-        });
+        // }, function err(err) {
+        //   $log.log(err);
+        // });
       }, Math.random() * 1000);
     }
 
     function cancelEvent(pusherEvent) {
       console.log(pusherEvent);
       setTimeout(function () {
-        EventService.setAppoinmentAsCancelled(pusherEvent.event.id).then(function(res) {
+        // EventService.setAppoinmentAsCancelled(pusherEvent.event.id).then(function(res) {
           updateDashboard('cancelled');
-          console.log(res);
-        }, function(err) {
-          console.log(err);
-        });
+        //   console.log(res);
+        // }, function(err) {
+        //   console.log(err);
+        // });
       }, Math.random() * 1000);
     }
 

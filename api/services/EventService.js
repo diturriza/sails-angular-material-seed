@@ -96,7 +96,7 @@ function getEventsTotals(cb) {
  * @return {[type]}        [description]
  */
 function logEvent(data, cb) {
-
+  console.log(data);
   Event.findOne({
     appointmentId: data.event.id
   }, function(err, obj) {

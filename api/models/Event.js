@@ -54,7 +54,7 @@ module.exports = {
     }
   },
   beforeCreate : function(values, cb){
-
+    console.log(values);
     values['appointmentId'] = values.event.id;
     values['dayCreated'] = parseInt(values.dayCreated) || new Date().getDay();
     values['patient'] = values.event.patient;
