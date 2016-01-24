@@ -13,7 +13,11 @@ module.exports = {
     /* e.g.
     nickname: 'string'
     */
-
+    email: {
+      type: 'string',
+      required: true
+    },
+    
     clinics :{
       collection: 'Clinic',
       via: 'managers',

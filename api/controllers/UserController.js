@@ -29,9 +29,9 @@ module.exports = require('waterlock').actions.user({
   },
   register: function(req, res) {
     var params = req.body,
-      def = waterlock.Auth.definition,
-      criteria = {
-        email: params.email
+      auth = {
+        email: params.email,
+        password: params.password
       };
 
     var attr = {
@@ -40,11 +40,24 @@ module.exports = require('waterlock').actions.user({
       lastname: params.lastname,
       password: params.password
     }
+    console.log('user registration');
+    console.log(attr);
 
-    waterlock.engine.findOrCreateAuth(criteria, attr, function(err, user) {
+    User.create(attr)
+    .exec(function(err, user){
       if (err)
-        return res.badRequest(err);
-      return res.ok(user);
+          return res.badRequest(err);
+      
+      waterlock.engine.attachAuthToUser(attr, user, function(err, user) {
+        if (err){
+          waterlock.logger.debug(err);
+          return res.badRequest(err);
+        }
+
+        return res.ok(user);
+      });
+
     });
+
   }
 });

@@ -51,6 +51,15 @@ module.exports = {
     },
     event: {
       type: 'json'
+    },
+    user: {
+      type: 'json'
+    },
+    clinic: {
+      type: 'json'
+    },
+    localization: {
+      type: 'json'
     }
   },
   beforeCreate : function(values, cb){
