@@ -15,9 +15,9 @@ module.exports = {
       type: 'string',
       required : true,
     },
-    clinic: {
+    clinicId: {
       type: 'string',
-      defaultsTo: null
+      required: true
     },
     appoinmentDate : {
       type: 'string',
@@ -63,7 +63,6 @@ module.exports = {
     }
   },
   beforeCreate : function(values, cb){
-    console.log(values);
     values['appointmentId'] = values.event.id;
     values['dayCreated'] = parseInt(values.dayCreated) || new Date().getDay();
     values['patient'] = values.event.patient;
@@ -73,5 +72,24 @@ module.exports = {
     values['appoinmentEndDate'] = values.event.dateFin;
 
     cb();
+  },
+  afterCreate : function(values, cb){
+    if (values.hasOwnProperty('clinic')){
+      var payload = {
+        name: values.clinic.fullname,
+        shortname: values.clinic.shortname,
+        clinicId: values.clinic.id,
+        payload:  values.clinic
+      };
+      var criteria =  {
+        shortname: values.clinic.shortname
+      };
+      Clinic.findOrCreate(criteria, payload).exec(function(err, instance){
+        if (err) {
+            cb(err);
+        }
+        return cb();
+      });
+    }
   }
 };

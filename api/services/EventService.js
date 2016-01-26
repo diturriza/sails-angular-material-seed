@@ -4,7 +4,7 @@ module.exports = {
   getEventsByDay: getEventsByDay,
   getEventsTotals: getEventsTotals,
   cancelAppointment: cancelAppointment,
-  logEvent:logEvent
+  logEvent: logEvent
 }
 
 /**
@@ -12,18 +12,33 @@ module.exports = {
  * @method getEventByDay
  * @return {[type]}      [description]
  */
-function getEventsByDay(cb) {
+function getEventsByDay(clinicId, cb) {
   Event.native(function(err, collection) {
     if (err) return cb(err);
 
-    collection.aggregate([{
+    var criteria = [{
       $group: {
         _id: "$dayCreated",
         count: {
           $sum: 1
         }
       }
-    }], function(err, results) {
+    }];
+
+    if (clinicId != 'all') {
+      criteria = [
+        {$match: {
+          clinicId: clinicId
+        }},
+        {$group: {
+          _id: "$dayCreated",
+          count: {
+            $sum: 1
+          }
+        }}];
+    }
+
+    collection.aggregate(criteria, function(err, results) {
       if (err) return cb(err);
       var data = [];
       for (var i = 0; i < 7; i++) {
@@ -63,18 +78,32 @@ function cancelAppointment(appointmentId, cb) {
     })
 }
 
-function getEventsTotals(cb) {
+function getEventsTotals(clinicId, cb) {
   Event.native(function(err, collection) {
     if (err) return cb(err);
-
-    collection.aggregate([{
+    var criteria = [{
       $group: {
         _id: "$status",
         count: {
           $sum: 1
         }
       }
-    }], function(err, results) {
+    }];
+
+    if (clinicId != 'all') {
+      criteria = [
+        {$match: {
+          clinicId: clinicId
+        }},
+        {$group: {
+          _id: "$status",
+          count: {
+            $sum: 1
+          }
+        }}];
+    }
+
+    collection.aggregate(criteria, function(err, results) {
       if (err) return cb(err);
       var data = [{
         _id: 'booked',
@@ -96,7 +125,6 @@ function getEventsTotals(cb) {
  * @return {[type]}        [description]
  */
 function logEvent(data, cb) {
-  console.log(data);
   Event.findOne({
     appointmentId: data.event.id
   }, function(err, obj) {
@@ -110,6 +138,7 @@ function logEvent(data, cb) {
       return cb(null, obj);
     }
     console.log('not exitss');
+
     Event.create(data, function(err, obj) {
       if (err) {
         return cb(err);

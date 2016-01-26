@@ -1,31 +1,77 @@
-/**
- * User
- *
- * @module      :: Model
- * @description :: This is the base user model
- * @docs        :: http://waterlock.ninja/documentation
- */
+var bcrypt = require('bcrypt');
 
-module.exports = {
+var User = {
+    // Enforce model schema in the case of schemaless databases
+    schema: true,
 
-  attributes: require('waterlock').models.user.attributes({
+    attributes: {
+      username: {
+        type: 'string',
+        unique: true
+      },
+      name: {
+        type: 'string',
+        defaultsTo: 'name'
+      },
+      lastname:{
+        type: 'string',
+        defaultsTo: 'lastname'
+      },
+      email: {
+        type: 'string',
+        required: true,
+        unique: true
+      },
+      isAdmin: {
+        type: 'boolean',
+        defaultsTo: false
+      },
 
-    /* e.g.
-    nickname: 'string'
-    */
-    email: {
-      type: 'string',
-      required: true
+      clinics: {
+        collection: 'Clinic',
+        via: 'managers',
+        dominant: true
+      },
+
+      encryptedPassword: {
+        type: 'string'
+      },
+      activated:{
+        type:'boolean',
+        defaultsTo: false
+      },
+      clinics:{
+        type: 'array',
+
+      },
+      toJSON: function() {
+        var obj = this.toObject();
+        delete obj.encryptedPassword;
+        return obj;
+      }
     },
-    
-    clinics :{
-      collection: 'Clinic',
-      via: 'managers',
-      dominant: true
-    }
 
-  }),
-
-  beforeCreate: require('waterlock').models.user.beforeCreate,
-  beforeUpdate: require('waterlock').models.user.beforeUpdate
+  // Here we encrypt password before creating a User
+  beforeCreate: function(values, next) {
+    bcrypt.genSalt(10, function(err, salt) {
+      if (err) return next(err);
+      bcrypt.hash(values.password, salt, function(err, hash) {
+        if (err) return next(err);
+        values.encryptedPassword = hash;
+        next();
+      })
+    })
+  },
+  comparePassword: function(password, user, cb) {
+    bcrypt.compare(password, user.encryptedPassword, function(err, match) {
+      if (err) cb(err);
+      if (match) {
+        cb(null, true);
+      } else {
+        cb(err);
+      }
+    })
+  }
 };
+
+module.exports = User;

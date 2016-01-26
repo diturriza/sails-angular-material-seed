@@ -8,11 +8,19 @@
  * @docs        :: http://waterlock.ninja/documentation
  */
 
-module.exports = require('waterlock').actions.user({
+module.exports = {
 
   index: function(req, res){
+
+    if(req.isSocket){
+      // subscribe client to model changes
+			User.watch(req.socket);
+      res.ok({
+        message: 'User subscribed to User Changes ' + req.socket.id
+      })
+    };
+
     User.find({})
-    .populate('auth')
     .paginate({page: req.query.page || 1, limit: req.query.limit || 5}).exec(function(err, data){
         User.count({}, function(err, count){
           if (err) res.serverError(err);
@@ -23,41 +31,56 @@ module.exports = require('waterlock').actions.user({
         });
     });
   },
-
-  lock: function(req, res){
-      return res.ok('this a jwt action');
-  },
-  register: function(req, res) {
-    var params = req.body,
-      auth = {
-        email: params.email,
-        password: params.password
-      };
-
-    var attr = {
-      email: params.email,
-      name: params.name,
-      lastname: params.lastname,
-      password: params.password
+  create: function (req, res) {
+    if (req.body.password !== req.body.confirmPassword) {
+      return res.badRequest({err: 'Password doesn\'t match, What a shame!'});
     }
-    console.log('user registration');
-    console.log(attr);
-
-    User.create(attr)
-    .exec(function(err, user){
-      if (err)
-          return res.badRequest(err);
-      
-      waterlock.engine.attachAuthToUser(attr, user, function(err, user) {
-        if (err){
-          waterlock.logger.debug(err);
-          return res.badRequest(err);
-        }
-
-        return res.ok(user);
-      });
-
+    User.findOrCreate(req.body).exec(function (err, user) {
+      if (err) {
+        return res.json(err.status, {err: err});
+      }
+      // If user created successfuly we return user and token as response
+      if (user) {
+        User.publishCreate(user);
+        // NOTE: payload is { id: user.id}
+        res.json(200, {user: user, token: jwToken.issue({id: user.id})});
+      }
     });
-
+  },
+  activate: function (req, res){
+    if (!req.body.userId) {
+      return res.json(401, {err: 'UserId is required'});
+    }
+    User.findOne({id: req.body.userId}).exec(function (err, user) {
+        if (err){
+          res.serverError(err);
+        }
+        User.update({id: user.id},{
+          activated: user.activated?false:true
+        }, function(err, resp){
+          if (err){
+            res.serverError(err);
+          }
+          return res.ok(resp[0]);
+        })
+    });
+  },
+  makeAdmin: function (req, res){
+    if (!req.body.userId) {
+      return res.json(401, {err: 'UserId is required'});
+    }
+    User.findOne({id: req.body.userId}).exec(function (err, user) {
+        if (err){
+          res.serverError(err);
+        }
+        User.update({id: user.id},{
+          isAdmin: user.isAdmin?false:true
+        }, function(err, resp){
+          if (err){
+            res.serverError(err);
+          }
+          return res.ok(resp[0]);
+        })
+    });
   }
-});
+}

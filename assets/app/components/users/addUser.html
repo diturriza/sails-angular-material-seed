@@ -17,12 +17,22 @@
       </md-input-container>
       <md-input-container class="md-block">
         <label>Email</label>
-        <input ng-model="ctrl.user.email" type="email">
+        <input ng-model="ctrl.user.email" type="email" required>
       </md-input-container>
       <md-input-container class="md-block">
         <label>Password</label>
         <input ng-model="ctrl.user.password" type="password">
       </md-input-container>
+      <md-input-container class="md-block">
+        <label>Confirm password</label>
+        <input ng-model="ctrl.user.confirmPassword" type="password">
+      </md-input-container>
+      <md-checkbox ng-model="ctrl.user.isAdmin" aria-label="is Admin">
+          Is Admin
+        </md-checkbox>
+        <md-checkbox ng-model="ctrl.user.activated" aria-label="is Admin">
+            Activated
+          </md-checkbox>
     </div>
   </md-dialog-content>
 

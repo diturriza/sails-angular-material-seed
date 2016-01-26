@@ -3,39 +3,50 @@
 
   angular
     .module('app.components.index')
+    .controller('DialogController', dialog)
     .controller('IndexController', index)
 
-  index.$inject = ["$http", "$q", "$scope", "$state", "$mdToast", "$pusher", "$log", "$mdDialog", "EventService","lodash"];
+  function dialog($scope, $mdDialog, item, $rootScope) {
+    $scope.item = item;
+    $scope.hide = function() {
+      $mdDialog.hide();
+    };
+    $scope.cancel = function() {
+      $mdDialog.cancel();
+    };
+    $scope.answer = function(answer) {
+      $mdDialog.hide(answer);
+    };
+  }
+  index.$inject = ["$http", "$q","$rootScope" ,"$scope", "$state", "$mdToast", "$pusher", "$log", "$mdDialog", "$mdMedia", "$sails", "EventService", "lodash"];
 
-  function index($http, $q, $scope, $state, $mdToast, $pusher, $log, $mdDialog, EventService, lodash) {
+  function index($http, $q, $rootScope, $scope, $state, $mdToast, $pusher, $log, $mdDialog, $mdMedia, $sails, EventService, lodash) {
     var vm = this;
     var client = new Pusher('05cebc0ddd1d3b1ba09f');
     var pusher = $pusher(client);
     var imagePath = "http://placehold.it/40x40";
-    vm.seeEventDetail = seeEventDetail;
+
 
     $scope.selected = [];
 
     vm.title = 'Debug Console';
 
     vm.headers = [{
-      name: 'Event',
-      field: 'event'
-    }, {
       name: 'Appoinment ID',
       field: 'appoinmentId'
     }, {
+      name: 'Clinic',
+      field: 'clinic.shortname'
+    }, {
       name: 'Patient',
       field: 'patient'
-    },
-    {
+    }, {
       name: 'Doctor',
       field: 'doctor'
-    },{
+    }, {
       name: 'Status',
       field: 'status'
-    }
-     ,{
+    }, {
       name: 'CreatedAt',
       field: 'CreatedAt'
     }, {
@@ -59,9 +70,11 @@
       console.log(points, evt);
     };
 
+    $rootScope.$watch('currentClinic', function(value){
+      updateDashboard();
+    });
+
     init();
-
-
 
     function init() {
       vm.events = [];
@@ -73,38 +86,36 @@
       vm.onPaginate = onPaginate;
       vm.content = "Hello content !";
 
-      $q.all([getEvents(), getEventsResume(), getEventsTotals()]).then(function() {
-        suscribeToPusher();
-        console.log('Index View Activated');
+      //suscribeToPusher();
+      suscribeToSocket();
+      //updateDashboard();
+    }
+
+    vm.click = function(ev, item) {
+      $mdDialog.show({
+          controller: 'DialogController',
+          templateUrl: 'app/components/event/detail.dialog.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          locals: {
+            item: item
+          },
+          fullscreen: true
+        })
+        .then(function(answer) {
+          $scope.status = 'You said the information was "' + answer + '".';
+        }, function() {
+          $scope.status = 'You cancelled the dialog.';
+        });
+      $scope.$watch(function() {
+        return $mdMedia('xs') || $mdMedia('sm');
+      }, function(wantsFullScreen) {
+        $scope.customFullscreen = (wantsFullScreen === true);
       });
-
-      $http.get('/event/jwt');
     }
 
-    function saveEvent(data) {
-      setTimeout(function () {
-        // EventService.saveEvent(data).then(function(data) {
-        //   $log.log(data);
-          updateDashboard('booked');
-        // }, function err(err) {
-        //   $log.log(err);
-        // });
-      }, Math.random() * 1000);
-    }
-
-    function cancelEvent(pusherEvent) {
-      console.log(pusherEvent);
-      setTimeout(function () {
-        // EventService.setAppoinmentAsCancelled(pusherEvent.event.id).then(function(res) {
-          updateDashboard('cancelled');
-        //   console.log(res);
-        // }, function(err) {
-        //   console.log(err);
-        // });
-      }, Math.random() * 1000);
-    }
-
-    function updateDashboard(event) {
+    function updateDashboard() {
 
       $q.all([getEvents(), getEventsResume(), getEventsTotals()]).then(function() {
         console.log('dashboard updated');
@@ -112,21 +123,32 @@
 
     }
 
-    function getEventsTotals() {
-      EventService.getEventsTotals().then(function(data) {
-        console.log(data);
+    function suscribeToSocket() {
+      $sails.get("/event/subscribe/").success(function(response) {
+        console.log(response);
+      }).error(function(response) {
+        console.log('error', response);
+      });
 
-        var booked = lodash.find(data,['_id', 'booked']);
-        var cancelled = lodash.find(data,['_id', 'cancelled']);
+     $sails.on("event", function(message) {
+        updateDashboard();
+      });
+    }
+
+    function getEventsTotals(clinicId) {
+      EventService.getEventsTotals(clinicId).then(function(data) {
+
+        var booked = lodash.find(data, ['_id', 'booked']);
+        var cancelled = lodash.find(data, ['_id', 'cancelled']);
 
         var totals = {
           booked: {
             label: "Booked Appoinments",
-            count: booked?booked.count:0
+            count: booked ? booked.count : 0
           },
           cancelled: {
             label: "Cancelled Appoinments",
-            count: cancelled?cancelled.count:0
+            count: cancelled ? cancelled.count : 0
           }
         };
 
@@ -134,15 +156,17 @@
         vm.eventsCancelledTotal = totals['cancelled'].count;
 
         $scope.pie = {
-          labels: [ totals['booked'].label, totals['cancelled'].label],
-          data: [ vm.eventsBookedTotal, vm.eventsCancelledTotal]
+          labels: [totals['booked'].label, totals['cancelled'].label],
+          data: [vm.eventsBookedTotal, vm.eventsCancelledTotal]
         };
+
+        vm.eventsCountTotal = vm.eventsBookedTotal + vm.eventsCancelledTotal;
 
       });
     }
 
-    function getEventsResume() {
-      EventService.getEventsResume().then(function(data) {
+    function getEventsResume(clinicId) {
+      EventService.getEventsResume(clinicId).then(function(data) {
         var resume = [];
 
         for (var i = 0; i < data.length; i++) {
@@ -161,9 +185,8 @@
       });
     }
 
-    function getEvents(query) {
-      vm.promise = EventService.getEvents(query || vm.query).then(function(res) {
-        console.log(res);
+    function getEvents(query, clinicId) {
+      vm.promise = EventService.getEvents(query || vm.query, clinicId).then(function(res) {
         vm.data = res.data;
         vm.count = res.count;
       }, function(err) {
@@ -172,7 +195,11 @@
     }
 
     function onPaginate(page, limit) {
-      getEvents({page: page,limit: limit,sort: ''});
+      getEvents({
+        page: page,
+        limit: limit,
+        sort: ''
+      });
     }
 
 
@@ -196,16 +223,7 @@
       });
     }
 
-    function seeEventDetail(data, event) {
-      $mdDialog.show(
-        $mdDialog.alert()
-        .title('Navigating')
-        .textContent('Inspect ' + data.name)
-        .ariaLabel('Person inspect demo')
-        .ok('Neat!')
-        .targetEvent(event)
-      );
-    }
+
 
   }
 })();

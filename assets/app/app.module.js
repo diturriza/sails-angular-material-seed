@@ -8,7 +8,7 @@
          */
         'app.shared.layout',
         'app.shared.table',
-
+        'app.shared.searchbox',
 
         /*
          * Components
@@ -27,6 +27,7 @@
         'ngMessages',
         'pusher-angular',
         'ngMdIcons',
-        'angularMoment'
+        'angularMoment',
+        'ngSails'
     ]);
 })();

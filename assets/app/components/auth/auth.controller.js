@@ -10,9 +10,12 @@
   function auth($scope, $state, $mdToast, $log, $mdDialog, Auth) {
     var vm = this;
     vm.login = login;
+    vm.error = false;
+    vm.errorText = 'error';
+    vm.loading = false;
     vm.credentials = {
 
-    }
+    };
 		init();
 
     function init(){
@@ -25,8 +28,18 @@
      * @return {[type]} [description]
      */
     function login(){
-      console.log(vm.credentials);
-      Auth.login(vm.credentials);
+      vm.loading = true;
+      setTimeout(function () {
+        Auth.login(vm.credentials).then(function(data){
+          console.log(data);
+          vm.loading = false;
+          $state.go('home.index');
+        }, function(resp){
+            vm.error = true;
+            vm.errorText = resp.err;
+            vm.loading = false;
+        });
+      }, 5000);
     }
 
   }

@@ -29,18 +29,21 @@
      * @return {[type]} [description]
      */
     function login(credentials) {
-      var login = $http.post('/auth/login', credentials);
+      var deferred = $q.defer();
 
-      login.then(function(response) {
-          var jwt = $http.get('/user/jwt');
-          jwt.then(function(response) {
-            LocalService.set('access_token', JSON.stringify(response.data));
-            $state.go('home.index');
-          });
-        },
-        function(err) {
-          console.log(err);
+      $http.post('/auth/login', credentials)
+        .success(function(data, status, headers, config) {
+          deferred.resolve(data);
+
+          if(data.hasOwnProperty('token')){
+            LocalService.set('access_token', JSON.stringify(data));
+            LocalService.get('access_token');
+          }
         })
+        .error(function(err) {
+          deferred.reject(err);
+        });
+      return deferred.promise;
     }
 
     /**
@@ -96,7 +99,7 @@
         token = angular.fromJson(LocalService.get('access_token')).token;
       }
       if (token) {
-        config.headers.access_token = token;
+        config.headers.Authorization = 'Bearer ' + token;
       }
       return config;
     }
@@ -104,7 +107,7 @@
     function responseError(response) {
       if (response.status === 401 || response.status === 403) {
         LocalService.unset('access_token');
-        //$injector.get('$state').go('home.login');
+        $injector.get('$state').go('home.login');
       }
       return $q.reject(response);
     }

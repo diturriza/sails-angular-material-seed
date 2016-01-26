@@ -38,11 +38,19 @@ module.exports.routes = {
 
   'get /event/totals/': 'EventController.totals',
   'get /event/resume/' : 'EventController.resume',
+  'get /event/subscribe/' : 'EventController.subscribe',
   'post /event/cancelAppointment/' : 'EventController.cancelAppointment',
-  'post /user/register/': 'UserController.register',
   'get /event/': 'EventController.index',
   'post /event/': 'EventController.log',
   'post /webhook/': 'EventController.webhook',
+
+  'post /auth/register' : 'UserController.create',
+  'post /auth/login' : 'AuthController.index',
+
+  'post /user/activate/' : 'UserController.activate',
+  'post /user/makeAdmin/' : 'UserController.makeAdmin',
+  'get /event/open/' : 'EventController.open',
+
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *

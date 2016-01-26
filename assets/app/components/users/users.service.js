@@ -11,7 +11,9 @@
 
     var UserService = {
       getUsers: getUsers,
-			registerUser: registerUser
+			registerUser: registerUser,
+			activateUser: activateUser,
+			setAsAdmin: setAsAdmin
     };
 
 
@@ -41,7 +43,7 @@
 		function registerUser(payload) {
 			var deferred = $q.defer();
 
-			$http.post('/user/register/', payload)
+			$http.post('/auth/register/', payload)
 				.success(function(data, status, headers, config) {
 					deferred.resolve(data);
 				})
@@ -50,6 +52,37 @@
 				});
 			return deferred.promise;
 		}
+
+		function activateUser(userId) {
+			var deferred = $q.defer();
+
+			$http.post('/user/activate/',{
+				userId: userId
+			})
+				.success(function(data, status, headers, config) {
+					deferred.resolve(data);
+				})
+				.error(function(status) {
+					deferred.reject(status);
+				});
+			return deferred.promise;
+		}
+
+		function setAsAdmin(userId) {
+			var deferred = $q.defer();
+
+			$http.post('/user/makeAdmin/',{
+				userId: userId
+			})
+				.success(function(data, status, headers, config) {
+					deferred.resolve(data);
+				})
+				.error(function(status) {
+					deferred.reject(status);
+				});
+			return deferred.promise;
+		}
+
 
 
     return UserService;

@@ -26,23 +26,21 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // '*': true,
+  '*': ['isAuthorized'],
 
   EventController:{
-    'webhook': true,
-
-    '*': ['hasJsonWebToken'],
+    'create': true,
+    'subscribe': true
   },
 
   UserController:{
-    'jwt': true,
 
-    '*': ['hasJsonWebToken'],
+    '*': true,
+  },
+
+  AuthController:{
+    '*': true,
   }
-
-  // AuthController:{
-  //   '*': ['hasJsonWebToken'],
-  // }
   /***************************************************************************
   *                                                                          *
   * Here's an example of mapping some policies to run before a controller    *

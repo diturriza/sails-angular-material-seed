@@ -4,6 +4,8 @@
  		 <h2>
  			 <a href="#/"><span>Rvous Stats Service</span></a>
  		 </h2>
+		 <md-button aria-label="Select Clinic" ng-click="vm.selectClinic($event)">Select Clinic</md-button>
+
  		 <span flex></span>
 
 		 <md-button ng-repeat="item in vm.menuItems" ui-sref="{{item.state}}" ng-click="ctrl.announceClick($index)">

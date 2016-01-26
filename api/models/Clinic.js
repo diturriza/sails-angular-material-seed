@@ -11,15 +11,25 @@ module.exports = {
 
   attributes: {
     name: {
-      type: 'string'
-
+      type: 'string',
+      required: true
+    },
+    shortname: {
+      type: 'string',
+      required: true,
+      unique: true
     },
     clinicId: {
-      type: 'string'
+      type: 'string',
+      required: true,
+      unique: true
     },
     managers: {
       collection: 'user',
       via: 'clinics'
+    },
+    payload: {
+      type: 'json'
     }
   }
 };

@@ -2,12 +2,12 @@
 	<div layout="row">
 		<md-card flex>
 			<md-toolbar class="md-primary">
-				<h1 class="md-toolbar-tools">Event Logger</h1>
+				<h1 class="md-toolbar-tools">Event Logger {{currentClinic.display}}</h1>
 			</md-toolbar>
 			<md-card-content>
 				<div layout="row">
 					<div layout="column" flex>
-						Events: {{vm.count}}
+						Events: {{vm.eventsCountTotal}}
 					</div>
 					<div layout="column" flex>
 						Appoinments Booked: {{vm.eventsBookedTotal}}
@@ -72,9 +72,9 @@
 	        </tr>
 	      </thead>
 	      <tbody md-body>
-	        <tr md-row md-select="item" md-select-id="{{item.id}}" md-auto-select ng-repeat="item in vm.data">
-						<td md-cell>{{item.name}}</td>
+	        <tr md-row ng-click="vm.click($event, item)" md-select="item" md-select-id="{{item.id}}" ng-repeat="item in vm.data">
 						<td md-cell>{{item.appointmentId}}</td>
+						<td md-cell> {{item.clinic.shortname}}</td>
 						<td md-cell>{{item.patient['nom'] +' '+item.patient['prénom'] }}</td>
 						<td md-cell>{{item.patient['médecinTraitant'].nomComplet}}</td>
 						<td md-cell>{{item.status}}</td>

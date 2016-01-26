@@ -25,22 +25,31 @@
 
 <!-- exact table from live demo -->
   <md-table-container>
-    <table md-table md-row-select ng-model="vm.selected" md-progress="vm.promise">
+    <table md-table  md-progress="vm.promise">
       <thead md-head md-order="vm.query.order" md-on-reorder="onReorder">
         <tr md-row>
           <th md-column><span>Email</span></th>
           <th md-column><span>Name</span></th>
           <th md-column>Created At</th>
           <th md-column>Updated At</th>
-
+          <th md-column>Active</th>
+          <th md-column>Is Admin</th>
         </tr>
       </thead>
       <tbody md-body>
-        <tr md-row md-select="user" md-select-id="{{user.auth.email}}" md-auto-select ng-repeat="user in vm.data">
-          <td md-cell>{{user.auth.email}}</td>
-          <td md-cell>{{user.auth.name + ' ' + user.auth.lastname}}</td>
+        <tr md-row ng-repeat="user in vm.data">
+          <td md-cell>{{user.email}}</td>
+          <td md-cell>{{user.name + ' ' + user.lastname}}</td>
           <td md-cell><span am-time-ago="user.createdAt"></span></td>
           <td md-cell><span am-time-ago="user.updatedAt"></span></td>
+          <td md-cell>
+          <md-checkbox ng-model="user.activated" ng-click="vm.activate(user)" aria-label="Is active">
+          </md-checkbox>
+        </td>
+        <td md-cell>
+          <md-checkbox ng-model="user.isAdmin" ng-click="vm.setAsAdmin(user)" aria-label="Is admin">
+          </md-checkbox>
+        </td>
         </tr>
       </tbody>
     </table>
