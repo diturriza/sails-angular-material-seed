@@ -11,8 +11,22 @@
 
 module.exports.bootstrap = function(cb) {
 
+  var admin = {
+    username: 'admin',
+    email: 'admin@admin.com',
+    password: 'admin',
+    isAdmin: true,
+    activated: true
+  };
+
+  User.findOrCreate({email: admin.email}, admin, function(err, admin){
+    if (err){
+      console.log(err);
+    }
+    console.log('admin:' , admin.email);
+  });
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   cb();
-  
+
 };

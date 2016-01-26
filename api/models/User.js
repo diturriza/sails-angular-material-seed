@@ -26,13 +26,6 @@ var User = {
         type: 'boolean',
         defaultsTo: false
       },
-
-      clinics: {
-        collection: 'Clinic',
-        via: 'managers',
-        dominant: true
-      },
-
       encryptedPassword: {
         type: 'string'
       },
@@ -42,7 +35,6 @@ var User = {
       },
       clinics:{
         type: 'array',
-
       },
       toJSON: function() {
         var obj = this.toObject();
