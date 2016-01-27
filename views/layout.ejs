@@ -9,14 +9,14 @@
   <!-- Angulars Material CSS now available via Google CDN; version 0.8 used here -->
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+    <link rel="stylesheet" href="/assets/css/admin.css">
   <link rel="stylesheet" href="/assets/libs/angular-material/angular-material.min.css">
   <link rel="stylesheet" href="/assets/libs/angular-chart.js/dist/angular-chart.css" media="screen" title="no title" charset="utf-8">
   <link rel="stylesheet" href="/assets/libs/angular-material-data-table/dist/md-data-table.min.css" media="screen" title="no title" charset="utf-8">
 </head>
 
 <body layout="row" ng-app="statsDashboard" ng-cloak>
-  <md-sidenav ng-show="isAuthenticated" class="md-sidenav-left md-whiteframe-z1" md-is-locked-open="$mdMedia('gt-md')" ng-show="Auth.isAuthenticated()" md-component-id="left" style="width: 250px;">
+  <md-sidenav ng-show="isAuthenticated" class="md-sidenav-left md-whiteframe-z1" md-is-locked-open="$mdMedia('gt-md')" md-component-id="left" style="width: 250px;">
     <md-toolbar class="md-theme-indigo">
       <h1 class="md-toolbar-tools">
         <a href="#/">
@@ -60,7 +60,7 @@
   <div ui-view layout="column" ng-controller="LayoutController as layout" flex></div>
 
   <!--SCRIPTS-->
-  
+
   <!--SCRIPTS END-->
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
