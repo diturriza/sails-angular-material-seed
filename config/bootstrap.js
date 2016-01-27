@@ -15,6 +15,7 @@ module.exports.bootstrap = function(cb) {
     username: 'admin',
     email: 'admin@admin.com',
     password: 'admin',
+    rvousId: 0,
     isAdmin: true,
     activated: true
   };

@@ -17,6 +17,7 @@
         'app.components.auth',
         'app.components.users',
         'app.components.account',
+        'app.components.clinic',
 
 
          /*

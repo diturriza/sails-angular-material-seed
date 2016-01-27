@@ -9,6 +9,16 @@ var User = {
         type: 'string',
         unique: true
       },
+      email: {
+        type: 'string',
+        required: true,
+        unique: true
+      },
+      rvousId: {
+        type: 'integer',
+        required: true,
+        unique: true
+      },
       name: {
         type: 'string',
         defaultsTo: 'name'
@@ -16,11 +26,6 @@ var User = {
       lastname:{
         type: 'string',
         defaultsTo: 'lastname'
-      },
-      email: {
-        type: 'string',
-        required: true,
-        unique: true
       },
       isAdmin: {
         type: 'boolean',

@@ -42,14 +42,16 @@ module.exports.routes = {
   'post /event/cancelAppointment/' : 'EventController.cancelAppointment',
   'get /event/': 'EventController.index',
   'post /event/': 'EventController.log',
-  'post /webhook/': 'EventController.webhook',
+  'get /event/open/' : 'EventController.open',
 
   'post /auth/register' : 'UserController.create',
   'post /auth/login' : 'AuthController.index',
 
   'post /user/activate/' : 'UserController.activate',
   'post /user/makeAdmin/' : 'UserController.makeAdmin',
-  'get /event/open/' : 'EventController.open',
+  'post /user/ban/': 'UserController.banUser',
+  'post /user/changeScope/': 'UserController.changeScope'
+
 
   /***************************************************************************
   *                                                                          *

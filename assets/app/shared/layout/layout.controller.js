@@ -13,18 +13,6 @@
     vm.logout = logout;
     vm.selectClinic = selectClinic;
     vm.menuItems = [{
-      icon: 'dashboard',
-      name: 'Dashboard',
-      state: 'home.index'
-    }, {
-      icon: 'supervisor_account',
-      name: 'Users',
-      state: 'home.users'
-    }, {
-      icon: 'settings',
-      name: 'Settings',
-      state: 'home.account'
-    }, {
       icon: 'account',
       name: 'Account',
       state: 'home.account'

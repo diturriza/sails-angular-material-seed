@@ -6,20 +6,20 @@
       .controller('searchBoxController', Controller);
 
 
-    Controller.$inject = ['$http','$q','$log','$mdDialog'];
+    Controller.$inject = ['$rootScope','$http','$q','$log','$mdDialog','lodash'];
 
     /* @ngInject */
-    function Controller($http, $q,$log,$mdDialog) {
+    function Controller($rootScope, $http, $q,$log,$mdDialog, lodash) {
       var vm = this;
-
+      vm.loadAll = loadAll;
       activate();
 
       function activate() {
-          loadAll();
+          //loadAll();
       }
 
       vm.simulateQuery = false;
-      vm.placeholder = 'Lookup for your item'
+      vm.placeholder = 'Select Clinic'
       vm.isDisabled = false;
       // list of `state` value/display objects
 
@@ -65,8 +65,8 @@
       function loadAll() {
 
         $http.get('/clinic').then(function(resp){
-          var values = resp.data;
-          vm.states = values.map(function(clinic) {
+          var values = resp.data.data;
+          vm.clinics = values.map(function(clinic) {
             return {
               value: clinic.shortname,
               display: clinic.name
@@ -86,6 +86,9 @@
         };
       }
 
+    vm.setClinic = function () {
+      $rootScope.currentClinic = lodash.find(vm.clinics, {'value' : vm.selected});
+    }
     vm.cancel = function($event) {
       $mdDialog.cancel();
     };

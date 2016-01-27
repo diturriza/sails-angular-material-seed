@@ -21,6 +21,18 @@ module.exports = {
         });
       }
 
+      if (!user.activated){
+        return res.forbidden({
+          err: 'Account inactive, please contact the administration.'
+        });
+      }
+
+      if (user.clinics && user.clinics.length === 0){
+        return res.forbidden({
+          err: 'No clinics associated to this account, please contact the administration.'
+        });
+      }
+
       User.comparePassword(password, user, function (err, valid){
         if (err){
           return res.json(403, {err: 'forbidden'});

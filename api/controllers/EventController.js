@@ -13,7 +13,7 @@ module.exports = {
     if(req.isSocket){
       // subscribe client to model changes
       Event.watch(req.socket);
-  
+
       res.ok({
         message: 'User subscribed to Event Changes ' + req.socket.id
       })
@@ -28,11 +28,13 @@ module.exports = {
 
   index: function(req, res){
     var criteria = {};
-    if(req.query.clinicId != 'all'){
+    if(req.query.clinicId && req.query.clinicId != 'all'){
       criteria = {
         clinicId: req.query.clinicId
       }
     }
+
+
     Event.find(criteria)
     .paginate({page: req.query.page || 1, limit: req.query.limit || 5})
     .sort(req.query.order || 'createdAt DESC')

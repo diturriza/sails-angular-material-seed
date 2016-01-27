@@ -10,9 +10,9 @@
       $httpProvider.defaults.withCredentials = true;
     });
 
-  Auth.$inject = ["$http", "$q","$state", "LocalService"];
+  Auth.$inject = ["$http", "$q","$state", "$rootScope" ,"LocalService"];
 
-  function Auth($http, $q, $state, LocalService) {
+  function Auth($http, $q, $state,$rootScope, LocalService) {
 
     var Auth = {
       authorize: authorize,
@@ -38,6 +38,8 @@
           if(data.hasOwnProperty('token')){
             LocalService.set('access_token', JSON.stringify(data));
             LocalService.get('access_token');
+            $rootScope.user = data.user;
+            LocalService.set('user',JSON.stringify(data.user));
           }
         })
         .error(function(err) {
@@ -53,6 +55,8 @@
      */
     function logout() {
       LocalService.unset('access_token');
+      LocalService.unset('user');
+      $rootScope.isAuthenticated = false;
       $state.go('home.login');
     }
 
