@@ -26,7 +26,7 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  '*': ['isAuthorized'],
+  // '*': ['isAuthorized'],
 
   EventController:{
     'create': true,

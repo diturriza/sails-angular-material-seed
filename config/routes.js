@@ -50,7 +50,9 @@ module.exports.routes = {
   'post /user/activate/' : 'UserController.activate',
   'post /user/makeAdmin/' : 'UserController.makeAdmin',
   'post /user/ban/': 'UserController.banUser',
-  'post /user/changeScope/': 'UserController.changeScope'
+  'post /user/changeScope/': 'UserController.changeScope',
+
+  'post /register/document': 'DocumentController.register'
 
 
   /***************************************************************************
