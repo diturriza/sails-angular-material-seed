@@ -1,117 +1,131 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
-  <title>Rvous Stats App</title>
-
-  <!-- Viewport mobile tag for sensible mobile support -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <!-- Angulars Material CSS now available via Google CDN; version 0.8 used here -->
-
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/admin.css">
-  <link rel="stylesheet" href="/assets/libs/angular-material/angular-material.min.css">
-  <link rel="stylesheet" href="/assets/libs/angular-chart.js/dist/angular-chart.css" media="screen" title="no title" charset="utf-8">
-  <link rel="stylesheet" href="/assets/libs/angular-material-data-table/dist/md-data-table.min.css" media="screen" title="no title" charset="utf-8">
+  <title>My First Admin</title>
+  <link rel="stylesheet" href="assets/libs/ng-admin/build/ng-admin.min.css">
 </head>
 
-<body layout="row" ng-app="statsDashboard" ng-cloak>
-  <md-sidenav ng-show="isAuthenticated" class="md-sidenav-left md-whiteframe-z1" md-is-locked-open="$mdMedia('gt-md')" md-component-id="left" style="width: 250px;">
-    <md-toolbar class="md-theme-indigo">
-      <h1 class="md-toolbar-tools">
-        <a href="#/">
-          <span>Rvous Stats Service</span>
-        </a>
-        </h2>
-    </md-toolbar>
-    <md-toolbar class="md-tall md-hue-2" style="font-size:small;">
-      <span flex></span>
-      <div layout="column" class="md-toolbar-tools-bottom inset">
-        <user-avatar></user-avatar>
-        <span></span>
+<body ng-app="myApp">
+  <div ui-view></div>
+  <script src="assets/libs/ng-admin/build/ng-admin.min.js"></script>
+  <script type="text/javascript">
+    var myApp = angular.module('myApp', ['ng-admin']);
+    myApp.config(['NgAdminConfigurationProvider', function(nga) {
+      // var nga = NgAdminConfigurationProvider;
+      // create an admin application
+      var admin = nga.application('Thirty Handmade Days Admin')
+        .baseApiUrl('http://localhost:1337/');
 
-        <div>Firstname Lastname</div>
-        <div>{{user.email}}</div>
-      </div>
-    </md-toolbar>
-    <md-content ng-controller="SidenavController as sidenav">
-      <md-list ng-cloak>
-        <md-subheader class="md-no-sticky">Available Options</md-subheader>
-        <md-list-item ng-if="user.isAdmin == menu.admin || user.isAdmin" ng-repeat="menu in sidenav.menuItems" layout="row" md-ink-ripple layout-align="start center" style="cursor: pointer;" ng-click="sidenav.changeState(menu.state)">
-          <div class="inset">
-            <ng-md-icon icon="{{menu.icon}}"></ng-md-icon>
-          </div>
-          <div class="inset">
-            {{menu.name}}
-          </div>
-        </md-list-item>
-        <md-list-item layout="row" md-ink-ripple layout-align="start center" style="cursor: pointer;" ng-click="sidenav.logout()">
-          <div class="inset">
-            <ng-md-icon icon="logout"></ng-md-icon>
-          </div>
-          <div class="inset">
-            Logout
-          </div>
-        </md-list-item>
-      </md-list>
-    </md-content>
-  </md-sidenav>
+      // Definicion de Entidades
+      var user = nga.entity('user');
+      var documents = nga.entity('document');
+      var inputs = nga.entity('input')
+        .identifier(nga.field('id')); // you can optionally customize the identifier used in the api ('id' by default)
 
-  <div ui-view layout="column" ng-controller="LayoutController as layout" flex></div>
+      // Add Entities to Admin
+      admin
+        // .addEntity(user);
+        .addEntity(documents)
+        .addEntity(inputs);
 
-  <!--SCRIPTS-->
-  
-  <!--SCRIPTS END-->
+      // Definicion de Actions
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-  <script src="//js.pusher.com/3.0/pusher.min.js"></script>
-  <script src="/assets/libs/Chart.js/Chart.js"></script>
-  <script src="/assets/libs/angular/angular.js"></script>
-  <script src="//cdn.jsdelivr.net/angular.pusher/latest/pusher-angular.min.js"></script>
-  <script src="/assets/libs/angular-ui-router/release/angular-ui-router.min.js"></script>
-  <script src="/assets/libs/angular-animate/angular-animate.min.js"></script>
-  <script src="/assets/libs/angular-aria/angular-aria.min.js"></script>
-  <script src="/assets/libs/angular-messages/angular-messages.min.js"></script>
-  <script src="/assets/libs/angular-chart.js/dist/angular-chart.js"></script>
-  <script src="/assets/libs/angular-material/angular-material.min.js"></script>
-  <script src="/assets/libs/angular-material-data-table/dist/md-data-table.min.js"></script>
-  <script src="/assets/libs/moment/min/moment.min.js"></script>
-  <script src="/assets/libs/angular-moment/angular-moment.min.js"></script>
-  <script src="/assets/libs/lodash/dist/lodash.min.js"></script>
-  <script src="/assets/libs/sails.io.js/dist/sails.io.js"></script>
-  <script src="/assets/libs/angular-sails/dist/angular-sails.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
+      // USER
+      // user.listView().fields([
+      //   nga.field('name').isDetailLink(true),
+      //   nga.field('username'),
+      //   nga.field('email')
+      // ]);
 
-  <script src="/app/app.module.js"></script>
-  <script src="/app/app.constants.js"></script>
-  <script src="/app/app.config.js"></script>
-  <script src="/app/app.route.js"></script>
-  <script src="/app/app.run.js"></script>
-  <script src="/app/components/auth/auth.module.js"></script>
-  <script src="/app/components/auth/auth.service.js"></script>
-  <script src="/app/components/auth/auth.controller.js"></script>
-  <script src="/app/components/auth/localStorage.service.js"></script>
-  <script src="/app/shared/layout/layout.module.js"></script>
-  <script src="/app/shared/layout/layout.controller.js"></script>
-  <script src="/app/shared/layout/sidenav.controller.js"></script>
-  <script src="/app/components/index/index.module.js"></script>
-  <script src="/app/components/index/event.service.js"></script>
-  <script src="/app/components/index/index.controller.js"></script>
-  <script src="/app/components/account/account.module.js"></script>
-  <script src="/app/components/account/account.service.js"></script>
-  <script src="/app/components/account/account.controller.js"></script>
-  <script src="/app/components/users/users.module.js"></script>
-  <script src="/app/components/users/users.service.js"></script>
-  <script src="/app/components/users/users.controller.js"></script>
-  <script src="/app/components/users/addUser.controller.js"></script>
-  <script src="/app/components/clinic/clinic.module.js"></script>
-  <script src="/app/components/clinic/clinic.service.js"></script>
-  <script src="/app/components/clinic/clinic.controller.js"></script>
-  <script src="/app/shared/table/table.module.js"></script>
-  <script src="/app/shared/table/table.directive.js"></script>
-  <script src="/app/shared/searchbox/searchbox.module.js"></script>
-  <script src="/app/shared/searchbox/searchbox.controller.js"></script>
+      documents.listView().fields([
+          nga.field('id'),
+          nga.field('title'),
+          nga.field('url_document'),
+          nga.field('inputs'),
+          nga.field('labels'),
+          nga.field('supplies'),
+          nga.field('tables'),
+          nga.field('createdAt', 'date'),
+          nga.field('updatedAt', 'date')
+        ])
+        .listActions(['show'])
+        .batchActions([]);
 
+      documents.creationView().fields([
+        nga.field('title'),
+        nga.field('url_document')
+      ]);
+
+      inputs.listView().fields([
+          nga.field('id'),
+          nga.field('type'),
+          nga.field('name'),
+          nga.field('style'),
+          nga.field('disabled'),
+          nga.field('value'),
+          nga.field('document_id', 'reference')
+            .isDetailLink(false)
+            .label('Document')
+            .targetEntity('documents')
+            .targetField(nga.field('title'))
+            .singleApiCall(ids => ({'id': ids })),
+          nga.field('createdAt', 'date'),
+          nga.field('updatedAt', 'date')
+        ])
+        .listActions(['show'])
+        .batchActions([]);
+
+      // documents.showView().fields(documents.listView());
+
+      nga.configure(admin);
+    }]);
+
+
+    myApp.config(['RestangularProvider', function(RestangularProvider) {
+      RestangularProvider.addFullRequestInterceptor(function(element, operation, what, url, headers, params) {
+        if (operation == "getList") {
+          // custom pagination params
+          if (params._page) {
+            params.limit = params._perPage;
+            var start = (params._page - 1) * params._perPage;
+            var end = params._page * params._perPage;
+            params.skip = start;
+          }
+          delete params._page;
+          delete params._perPage;
+          // custom sort params
+          if (params._sortField) {
+            var sort = params._sortField;
+            var order = params._sortDir;
+            params.sort = sort + ' ' + order;
+          }
+          delete params._sortField;
+          delete params._sortDir;
+          // custom filters
+          if (params._filters) {
+            for (var filter in params._filters) {
+              params[filter] = params._filters[filter];
+            }
+          }
+          delete params._filters;
+        }
+        return {
+          params: params
+        };
+      });
+      RestangularProvider.addFullRequestInterceptor(function(element, operation, what, url, headers, params, httpConfig) {
+        if (operation == 'post' || operation == 'put') {
+          element = {
+            values: element
+          };
+        }
+        return {
+          element: element
+        };
+      });
+    }]);
+  </script>
 </body>
 
 </html>

@@ -36,14 +36,6 @@ module.exports.routes = {
     view: 'layout'
   },
 
-  'get /event/totals/': 'EventController.totals',
-  'get /event/resume/' : 'EventController.resume',
-  'get /event/subscribe/' : 'EventController.subscribe',
-  'post /event/cancelAppointment/' : 'EventController.cancelAppointment',
-  'get /event/': 'EventController.index',
-  'post /event/': 'EventController.log',
-  'get /event/open/' : 'EventController.open',
-
   'post /auth/register' : 'UserController.create',
   'post /auth/login' : 'AuthController.index',
 

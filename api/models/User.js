@@ -14,11 +14,6 @@ var User = {
         required: true,
         unique: true
       },
-      rvousId: {
-        type: 'integer',
-        required: true,
-        unique: true
-      },
       name: {
         type: 'string',
         defaultsTo: 'name'
@@ -37,9 +32,6 @@ var User = {
       activated:{
         type:'boolean',
         defaultsTo: false
-      },
-      clinics:{
-        type: 'array',
       },
       toJSON: function() {
         var obj = this.toObject();

@@ -29,7 +29,8 @@
     "lodash": "~4.0.0",
     "sails.io.js": "~0.13.3",
     "underscore": "~1.8.3",
-    "angular-sails": "~1.1.4"
+    "angular-sails": "~1.1.4",
+    "ng-admin": "~0.9.1"
   },
   "resolutions": {
     "moment": ">=2.8.0 <2.11.0",
