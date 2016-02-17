@@ -33,6 +33,10 @@ var User = {
         type:'boolean',
         defaultsTo: false
       },
+      documents:{
+        collection:'document',
+        via: 'createdBy'
+      },
       toJSON: function() {
         var obj = this.toObject();
         delete obj.encryptedPassword;

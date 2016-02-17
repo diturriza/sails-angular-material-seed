@@ -34,6 +34,13 @@ module.exports = {
     supplies: {
       collection: 'supply',
       via: 'documentThm'
+    },
+    editable:{
+      type: 'boolean',
+      defaultsTo: false
+    },
+    createdBy: {
+      model: 'user'
     }
   }
 };
