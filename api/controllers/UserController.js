@@ -24,10 +24,7 @@ module.exports = {
     .paginate({page: req.query.page || 1, limit: req.query.limit || 5}).exec(function(err, data){
         User.count({}, function(err, count){
           if (err) res.serverError(err);
-          return res.ok({
-            data: data,
-            count : count
-          });
+          return res.ok(data);
         });
     });
   },

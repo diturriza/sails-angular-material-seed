@@ -26,6 +26,9 @@ module.exports = {
     },
     value:{
       type:'string'
+    },
+    documentThm :{
+      model: 'document'
     }
   }
 };

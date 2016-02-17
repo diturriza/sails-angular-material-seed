@@ -20,6 +20,9 @@ module.exports = {
     },
     text:{
       type:'string'
+    },
+    tableId: {
+      model: 'table'
     }
 
   }

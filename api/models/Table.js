@@ -13,10 +13,15 @@ module.exports = {
       required:true
     },
     th: {
-      collection:'tHead'
+      collection:'tHead',
+      via: 'tableId'
     },
     tr: {
-      collection:'tRow'
+      collection:'tRow',
+      via: 'tableId'
+    },
+    documentThm :{
+      model: 'document'
     }
   }
 };

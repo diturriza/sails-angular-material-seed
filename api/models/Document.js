@@ -16,17 +16,24 @@ module.exports = {
     url_title: {
       type:'sting'
     },
+    url_title: {
+      type:'sting'
+    },
     inputs: {
-      collection: 'input'
+      collection: 'input',
+      via: 'documentThm'
     },
     labels: {
-      collection: 'label'
+      collection: 'label',
+      via: 'documentThm'
     },
     tables: {
-      collection: 'table'
+      collection: 'table',
+      via: 'documentThm'
     },
     supplies: {
-      collection: 'supply'
+      collection: 'supply',
+      via: 'documentThm'
     }
   }
 };

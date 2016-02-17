@@ -11,6 +11,9 @@ module.exports = {
     text:{
       type:'string',
       required:true
+    },
+    documentThm :{
+      model: 'document'
     }
   }
 };
