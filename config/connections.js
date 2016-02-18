@@ -62,14 +62,19 @@ module.exports.connections = {
     port: 27017,
     // user: 'username',
     // password: 'password',
-    database: 'rvous'
+    database: 'thm_db'
     // url: 'mongodb://heroku_hhn2xlgb:aisi244h6umu30bese1r78q1r6@ds039125.mongolab.com:39125/heroku_hhn2xlgb'
   },
 
-  productionMongoLab: {
+  developmentMongoLab: {
   adapter: 'sails-mongo',
-  url: 'mongodb://heroku_hhn2xlgb:aisi244h6umu30bese1r78q1r6@ds039125.mongolab.com:39125/heroku_hhn2xlgb'
+  url: ' mongodb://heroku_6c7h344f:lccot1devadmin@ds011268.mongolab.com:11268/heroku_6c7h344f'
   },
+
+  // productionMongoLab: {
+  // adapter: 'sails-mongo',
+  // url: 'mongodb://heroku_hhn2xlgb:aisi244h6umu30bese1r78q1r6@ds039125.mongolab.com:39125/heroku_hhn2xlgb'
+  // },
 
   /***************************************************************************
   *                                                                          *
